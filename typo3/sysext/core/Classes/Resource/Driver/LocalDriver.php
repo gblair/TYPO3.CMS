@@ -477,6 +477,16 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			'identifier' => $containerPath . $fileName,
 			'storage' => $this->storage->getUid()
 		);
+		// get additional information for image files
+		$imageInfo = getimagesize($filePath);
+		if (is_array($imageInfo))
+		{
+			$fileInformation['width'] = $imageInfo[0];
+			$fileInformation['height'] = $imageInfo[1];
+			if (!$fileInformation['mimetype'] && !empty($imageInfo['mime'])) {
+				$fileInformation['mimetype'] = $imageInfo['mime'];
+			}
+		}
 		return $fileInformation;
 	}
 
